@@ -1,6 +1,7 @@
 import axios from "axios";
 import { addDoc, collection, serverTimestamp, Timestamp } from "firebase/firestore";
 import { db } from "./fireBaseApp";
+import imageCompression from "browser-image-compression";
 const apiKey = import.meta.env.VITE_IMGBB_API_KEY
 const imgbbUrl ="https://api.imgbb.com/1/upload?key="+apiKey
 const uploadToIMGBB = async(file) => {
@@ -27,7 +28,7 @@ export const addRecipe=async(recipe,file)=>{
             console.log(result);
             
         const collectionRef = collection(db,'recipes')
-        await addDoc(collectionRef, {...recipe, url, delete_url, timestamp:serverTimestamp()})
+        await addDoc(collectionRef, {...recipe, imgUrl, deleteUrl, timestamp:serverTimestamp()})
         }
     } catch (error) {
         console.log("Nem sikerült hozzáadni!" + error);
