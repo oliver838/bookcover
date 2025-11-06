@@ -1,8 +1,9 @@
 import React, { useState, useRef } from "react";
 import { FaPlus, FaTrashAlt } from "react-icons/fa";
 import { IoClose } from "react-icons/io5";
-import { useNavigate } from "react-router";
-import { addRecipe } from "../MyBackend";
+import { useNavigate, useParams } from "react-router";
+import { addRecipe, readRecip, updateRecipe } from "../MyBackend";
+import { useEffect } from "react";
 
 export const RecipesForm = ()=> {
   const [name, setName] = useState("");
@@ -12,8 +13,35 @@ export const RecipesForm = ()=> {
   const [file, setFile] = useState(null);
   const [preview, setPreview] = useState(null);
   const [isLoading, setLoading] = useState(false);
+  const [mehet,setMehet] = useState(false)
   const navigate = useNavigate();
   const fileInputRef = useRef();
+  const {id} = useParams();
+  const [recipe,setRecipe] = useState(null)
+  console.log(id);
+  
+    console.log(recipe);
+
+  useEffect(()=>{
+    if(id){
+       readRecip(id,setRecipe);
+    } 
+  },[id])
+  useEffect(() => {
+  if (preview) {
+    setMehet(true)
+  }
+}, [preview])
+
+  useEffect(()=>{
+    if(recipe){
+    setName(recipe.name)
+    setCategory(recipe.category)
+    setIngredients(recipe.ingredients)
+    setSteps(recipe.steps)
+    setPreview(recipe.imgUrl)
+    }
+  },[recipe])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,10 +49,22 @@ export const RecipesForm = ()=> {
     try {
       const inputData = { name, ingredients: ingredients.filter(i => i.trim() !== ""), steps, category };
       console.log("Submitting:", inputData);
-      await addRecipe(inputData, file);
+      if(id){
+        await updateRecipe(id, !file ? {...inputData, imgUrl:recipe.imgUrl,deleteUrl:recipe.deleteUrl}: inputData,file)
+      }else{
+        await addRecipe(inputData, file);
       console.log("Recept elmentve");
       // Optionally navigate back or clear form
+       }
+      setName('')
+      setCategory('')
+      setSteps('')
+      setIngredients([''])
+      setFile(null)
+      setLoading(false)
       navigate("/recipes");
+     
+
     } catch (err) {
       console.error(err);
       alert("Hiba történt a mentéskor.");
@@ -81,6 +121,7 @@ export const RecipesForm = ()=> {
                     value={item}
                     onChange={(e) => handleChangeIngredients(index, e.target.value)}
                     placeholder={`#${index + 1} hozzávaló`}
+                    required
                   />
                   <button
                     type="button"
@@ -118,8 +159,8 @@ export const RecipesForm = ()=> {
             />
 
             <div className="rf-actions">
-              <button className="rf-submit" type="submit" disabled={isLoading}>
-                {isLoading ? <span className="rf-spinner" aria-hidden></span> : "Mentés"}
+              <button className="rf-submit" type="submit"  disabled={!mehet}>
+                 Mentés
               </button>
               <button className="rf-cancel" type="button" onClick={() => navigate("/recipes")}>Mégse</button>
             </div>
@@ -145,6 +186,7 @@ export const RecipesForm = ()=> {
               accept="image/*"
               onChange={handleFileChange}
               style={{ display: "none" }}
+            
             />
 
             <div className="rf-hint">Használj jó minőségű, arányos képet (pl. 4:3). A kép automatikusan feltöltődik a mentéskor.</div>

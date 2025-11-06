@@ -1,5 +1,5 @@
 import axios from "axios";
-import { addDoc, collection, serverTimestamp, Timestamp } from "firebase/firestore";
+import { addDoc, collection, deleteDoc, doc, getDoc, onSnapshot, orderBy, query,  serverTimestamp, Timestamp, updateDoc } from "firebase/firestore";
 import { db } from "./fireBaseApp";
 import imageCompression from "browser-image-compression";
 const apiKey = import.meta.env.VITE_IMGBB_API_KEY
@@ -32,6 +32,47 @@ export const addRecipe=async(recipe,file)=>{
         }
     } catch (error) {
         console.log("Nem sikerült hozzáadni!" + error);
+        
+    }
+}
+export const readRecipe = async (setRecipes) =>{
+   
+        const collectionRef = collection(db,'recipes')
+        const q = query(collectionRef, orderBy("timestamp","desc"))
+        const unsubscribe = onSnapshot(q,(snapshot)=>{
+            setRecipes(snapshot.docs.map(doc=>({...doc.data(), id:doc.id})))
+        })
+        
+        
+        return unsubscribe
+}
+export const deleteRecipe = async (id,delete_url) =>{
+    const docRef = doc(db,'recipes',id)
+    await deleteDoc(docRef)
+}
+
+export const readRecip = async (id,setRecipe)=>{
+    const docRef= doc(db,'recipes',id)
+    const docData = await getDoc(docRef)
+    setRecipe(docData.data())
+}
+
+export const updateRecipe = async (id,updatedData,file)=>{
+    let imgUrl=updatedData.imgUrl || ''
+    let deleteUrl=updatedData.deleteUrl || ''
+    try {
+        if(file){
+            const compressed = await imageCompression(file,{maxWidthOrHeight:800,useWebWorker:true})
+            const result = await uploadToIMGBB(compressed)
+            if(result){
+                imgUrl = result.url
+                deleteUrl = result.delete_url
+            }
+        }
+        const docRef = doc(db,'recipes',id)
+        await updateDoc(docRef, {...updatedData,imgUrl,deleteUrl,updatedAt:serverTimestamp})
+    } catch (error) {
+        console.log("Nem sikerült a módosytás",error);
         
     }
 }
