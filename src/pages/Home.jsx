@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { FaHome, FaPlus, FaUtensils } from "react-icons/fa";
 import { useNavigate } from "react-router";
 import { addRecipe } from "../MyBackend";
+import { HomeBar } from "../components/HomeBar";
 
 
 // ---------- Home komponens (modern stílus) ----------
@@ -11,6 +12,8 @@ const navigate = useNavigate();
 
 return (
 <div className="home-root">
+    
+            <HomeBar/>
 <div className="home-hero">
 <div className="home-hero-left">
 <h1 className="home-title">RecipeBook</h1>

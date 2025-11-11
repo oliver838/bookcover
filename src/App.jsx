@@ -6,6 +6,8 @@ import { Route, Routes } from 'react-router'
 import { Home } from './pages/Home'
 import { Recipes } from './pages/Recipes'
 import { RecipesForm } from './pages/RecipesForm'
+import { SignIn } from './pages/SignIn'
+import { SignUp } from './pages/SignUp'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -16,6 +18,10 @@ function App() {
       <Route path='/recipes' element={<Recipes/>}/>
       <Route path='/addNew' element={<RecipesForm/>}/>
       <Route path='/edit/:id' element={<RecipesForm/>}/>
+      
+      <Route path='/signIn' element={<SignIn/>}/>
+      
+      <Route path='/signUp' element={<SignUp/>}/>
     </Routes>
   )
 }
