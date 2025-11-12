@@ -5,6 +5,7 @@ import { FaHome, FaPlus } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router";
 import { ReciepeCard } from "../components/ReciepeCard";
 import { readRecipe } from "../MyBackend";
+import { HomeBar } from "../components/HomeBar";
 
 export const Recipes = () => {
   const [recipes,setRecipes] = useState([])
@@ -17,6 +18,7 @@ export const Recipes = () => {
   
   return (
     <div className="recipes-root">
+      <HomeBar/>
       <header className="recipes-header">
         <FaHome className="recipes-home" onClick={() => navigate('/')} aria-label="Vissza a főoldalra" />
         <h1 className="recipes-title">Receptek</h1>

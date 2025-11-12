@@ -13,6 +13,7 @@ export const ReciepeCard = ({ id, name, steps, ingredients, imgUrl, deleteUrl })
       <h1>{name}</h1>
 
       <ul>
+        <h4>Hozzávalók:</h4>
         {ingredients.map((obj, index) => (
           <li key={index}>{obj}</li>
         ))}

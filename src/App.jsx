@@ -8,6 +8,9 @@ import { Recipes } from './pages/Recipes'
 import { RecipesForm } from './pages/RecipesForm'
 import { SignIn } from './pages/SignIn'
 import { SignUp } from './pages/SignUp'
+import { useEffect } from 'react'
+import { useContext } from 'react'
+import { MyUserContext } from './context/MyUserProvider'
 
 function App() {
   const [count, setCount] = useState(0)
