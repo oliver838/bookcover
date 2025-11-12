@@ -888,8 +888,9 @@ align-items:center;
 
 /* Bal felső ikon (🏠) */
 .homebar-left {
-  position: fixed;
+  position: absolute;
   top: 20px;
+  
   left: 20px;
   z-index: 1000;
 }
@@ -907,6 +908,7 @@ align-items:center;
 .homebar-icon {
   font-size: 26px;
   cursor: pointer;
+  display: block;
   color: var(--secondary);
   background: rgba(255, 255, 255, 0.05);
   border-radius: 50%;
@@ -915,15 +917,34 @@ align-items:center;
   box-shadow: 0 4px 14px rgba(28, 2, 33, 0.5);
 }
 
+.homebar-text {
+  font-size: 18px;
+  cursor: pointer;
+  color: var(--secondary);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  padding: 10px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(28, 2, 33, 0.5);
+}
 .homebar-icon:hover {
-  background: linear-gradient(90deg, var(--accent), var(--primary));
-  transform: scale(1.15) rotate(5deg);
+  background: rgb(30, 23, 49);
+  transform: scale(1.15);
+  box-shadow: 0 8px 22px rgba(28,2,33,0.7);
+}
+.homebar-text:hover {
+  background: rgb(30, 23, 49);
+  transform: scale(1.15);
   box-shadow: 0 8px 22px rgba(28,2,33,0.7);
 }
 
 /* Mobil */
 @media (max-width: 480px) {
   .homebar-icon {
+    font-size: 22px;
+    padding: 8px;
+  }
+   .homebar-text {
     font-size: 22px;
     padding: 8px;
   }
