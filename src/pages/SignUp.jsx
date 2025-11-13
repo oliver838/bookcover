@@ -4,30 +4,30 @@ import { HomeBar } from '../components/HomeBar';
 import { useContext } from 'react';
 import { MyUserContext } from '../context/MyUserProvider';
 import { useEffect } from 'react';
+import { MyToastify } from '../components/MyToastify';
+import { useState } from 'react';
 
 export const SignUp = () => {
-
+    const [loading,setLoading] = useState(false)
     const navigate = useNavigate()
     const {signUpUser,msg,logOutUser,setMsg} = useContext(MyUserContext)
     const handleSubmit=(event)=>{
+      
       event.preventDefault()
       const data = new FormData(event.currentTarget)
       console.log(data.get('email'),data.get('password'),data.get('display_name'));
-      signUpUser(data.get('email'),data.get('password'),data.get('display_name'))
+      
+      setLoading(true)
+      signUpUser(data.get('email'),data.get('password'),data.get('display_name'),setLoading)
       
     }
-    useEffect(()=>{
-      msg && msg?.signUp && navigate('/recipes')
-    },[msg])
-      useEffect(()=>{
-    console.log("barack");
-    
-    setMsg({})
-  },[])
+   
+  
   return (
     <div className="signup-root">
         
                 <HomeBar/>
+                {msg && <MyToastify {...msg}/>}
       <div className="signup-card">
         <h1 className="signup-title">Regisztrálás</h1>
 
@@ -53,13 +53,13 @@ export const SignUp = () => {
           </div>
 
 
-          <button type="submit" className="signup-btn">Regisztrálok</button>
+          <button type="submit" className="signup-btn" style={{cursor: loading ?"auto" : "pointer", background: loading ?"gray" :"" }} disabled={loading}>Regisztrálok</button>
         </form>
 
         <p className="signup-footer">
           Van már fiókod? <span onClick={()=>navigate("/signIn")}  className="signup-link">Jelentkezz be!</span>
         </p>
-        {msg && (msg?.err || msg?.signUp) && <p style={{color:'red'}}>{msg?.err || msg.signUp}</p>}
+        {/* {msg && (msg?.err || msg?.signUp) && <p style={{color:'red'}}>{msg?.err || msg.signUp}</p>} */}
       </div>
     </div>
   );

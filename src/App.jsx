@@ -11,6 +11,7 @@ import { SignUp } from './pages/SignUp'
 import { useEffect } from 'react'
 import { useContext } from 'react'
 import { MyUserContext } from './context/MyUserProvider'
+import { PwReset } from './components/PwReset'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -25,6 +26,7 @@ function App() {
       <Route path='/signIn' element={<SignIn/>}/>
       
       <Route path='/signUp' element={<SignUp/>}/>
+      <Route path='/pwReset' element={<PwReset/>}/>
     </Routes>
   )
 }

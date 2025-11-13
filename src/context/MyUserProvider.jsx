@@ -7,10 +7,13 @@ import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
   sendEmailVerification,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signOut,
+  updatePassword,
   updateProfile,
 } from "firebase/auth";
+import { SignUp } from "../pages/SignUp";
 
 export const MyUserContext = createContext();
 export const MyUserProvider = ({ children }) => {
@@ -25,7 +28,7 @@ export const MyUserProvider = ({ children }) => {
     return () => unsubscirbe();
   }, []);
 
-  const signUpUser = async (email, password, display_name) => {
+  const signUpUser = async (email, password, display_name,setLoading) => {
     console.log(email, password, display_name);
     try {
       await createUserWithEmailAndPassword(auth, email, password);
@@ -35,10 +38,12 @@ export const MyUserProvider = ({ children }) => {
       console.log("sikeres regisztráció...");
       console.log(auth.currentUser);
       setUserReg(auth);
-      setMsg({ err: "verify" });
+      setMsg({ signUp:"Kattints az emailben érkezett megerősítésre" })
     } catch (error) {
       console.log(error);
       setMsg({ err: error.message });
+    }finally{
+      setLoading(false)
     }
   };
 
@@ -64,10 +69,27 @@ export const MyUserProvider = ({ children }) => {
       setMsg({ err: error.message });
     }
   };
+
+
+  const resetPassword = async(email) =>{
+    let succes = false
+    try {
+      await sendPasswordResetEmail(auth,email)
+      setMsg({resetPw:"A jelszó visszaállítási email elküldve"})
+      succes = true
+    } catch (error) {
+        console.log(error);
+        setMsg({err:error.message})
+    }finally{
+      if(succes){
+        navigate("/")
+      }
+    }
+  }
   return (
     <div>
       <MyUserContext.Provider
-        value={{ user, signUpUser, logOutUser, signInUser, msg, setMsg }}
+        value={{ user, signUpUser, logOutUser, signInUser, msg, setMsg,resetPassword }}
       >
         {children}
       </MyUserContext.Provider>

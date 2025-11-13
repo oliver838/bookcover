@@ -22,6 +22,7 @@ export const ReciepeCard = ({ id, name, steps, ingredients, imgUrl, deleteUrl })
       <p>{steps}</p>
 
       <div className='recipe-card-icons'>
+     
         <MdDeleteForever
           size={28}
           onClick={() => deleteRecipe(id, deleteUrl)}

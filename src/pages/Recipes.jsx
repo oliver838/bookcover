@@ -10,19 +10,19 @@ import { HomeBar } from "../components/HomeBar";
 export const Recipes = () => {
   const [recipes,setRecipes] = useState([])
   const navigate = useNavigate();
-  
+  const [loading,setLoading] = useState(null)
   useEffect(()=>{
-    readRecipe(setRecipes)
+    setLoading(true)
+    readRecipe(setRecipes, setLoading)
   },[])
+
+  
   console.log(recipes);
   
   return (
     <div className="recipes-root">
       <HomeBar/>
-      <header className="recipes-header">
-        <FaHome className="recipes-home" onClick={() => navigate('/')} aria-label="Vissza a főoldalra" />
-        <h1 className="recipes-title">Receptek</h1>
-      </header>
+      {loading && "alma"}
 
       <main className="recipes-content">
 

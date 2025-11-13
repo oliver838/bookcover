@@ -4,6 +4,7 @@ import { HomeBar } from '../components/HomeBar';
 import { MyUserContext } from '../context/MyUserProvider';
 import { useContext } from 'react';
 import { useEffect } from 'react';
+import { MyToastify } from '../components/MyToastify';
 
 export const SignIn = () => {
    
@@ -26,6 +27,7 @@ export const SignIn = () => {
   },[])
     return (
     <div className="signin-root">
+      {msg && <MyToastify {...msg}/>}
         <HomeBar/>
       <div className="signin-card">
         <h1 className="signin-title">Bejelentkezés</h1>
@@ -47,8 +49,11 @@ export const SignIn = () => {
         <p className="signin-footer">
           Nincs még fiókod? <span onClick={(()=>navigate("/signUp"))}className="signin-link">Regisztrálj!</span>
         </p>
-        {msg && msg?.err && <p style={{color:'red'}}>{msg.err}</p>}
-        {}
+        <p className="signin-footer">
+          Elfelejtetted a jelszód? <span onClick={(()=>navigate("/pwReset"))}className="signin-link">Kattints!</span>
+        </p>
+        {/* {msg && msg?.err && <p style={{color:'red'}}>{msg.err}</p>} */}
+        
       </div>
     </div>
   );
